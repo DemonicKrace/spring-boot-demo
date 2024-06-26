@@ -1,7 +1,7 @@
 package com.example.controller;
 
+import com.example.common.Result;
 import com.example.controller.param.OrderParam;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +19,8 @@ public class TestController {
         return "e";
     }
 
-
     @PostMapping("/testOrder")
-    public String testOrder(@RequestBody OrderParam param) {
-        System.out.println(param);
-        return "1";
+    public Result testOrder(@RequestBody OrderParam param) {
+        return Result.genSuccessResult(param);
     }
 }
