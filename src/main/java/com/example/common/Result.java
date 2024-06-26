@@ -20,8 +20,14 @@ public class Result<T> {
         private String message;
 
         public Builder<T> success() {
-            this.code = 1;
-            this.message = "SUCCESS";
+            this.code = ResultCode.SUCCESS.getCode();
+            this.message = ResultCode.SUCCESS.getMessage();
+            return this;
+        }
+
+        public Builder<T> fail(ResultCode code) {
+            this.code = code.getCode();
+            this.message = code.getMessage();
             return this;
         }
 
