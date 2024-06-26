@@ -1,10 +1,10 @@
 package com.example.controller;
 
+import com.example.controller.param.OrderParam;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test")
@@ -20,8 +20,9 @@ public class TestController {
     }
 
 
-    @GetMapping("/")
-    public String test() {
+    @PostMapping("/testOrder")
+    public String testOrder(@RequestBody OrderParam param) {
+        System.out.println(param);
         return "1";
     }
 }
