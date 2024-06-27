@@ -1,4 +1,4 @@
-package com.example.common.order;
+package com.example.common;
 
 public enum ResultCode {
 

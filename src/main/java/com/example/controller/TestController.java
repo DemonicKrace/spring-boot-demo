@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import com.example.common.order.Result;
-import com.example.controller.param.OrderParam;
+import com.example.common.Result;
+import com.example.controller.param.TradeOrderParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class TestController {
     }
 
     @PostMapping("/testOrder")
-    public Result testOrder(@RequestBody OrderParam param) {
+    public Result testOrder(@RequestBody TradeOrderParam param) {
         return Result.genSuccessResult(param);
     }
 }

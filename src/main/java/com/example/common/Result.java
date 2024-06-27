@@ -1,4 +1,4 @@
-package com.example.common.order;
+package com.example.common;
 
 import lombok.Data;
 
@@ -46,10 +46,16 @@ public class Result<T> {
             return new Result<>(this);
         }
     }
+
     public static <T> Builder<T> newBuilder() {
         return new Builder<>();
     }
-    public static <T> Result<T> genSuccessResult(T data){
+
+    public static <T> Result<T> genSuccessResult(T data) {
         return Result.<T>newBuilder().success().addData(data).build();
+    }
+
+    public static <T> Result<T> genSuccessResult() {
+        return Result.<T>newBuilder().success().build();
     }
 }
