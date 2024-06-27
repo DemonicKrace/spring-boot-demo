@@ -1,17 +1,18 @@
 package com.example.controller;
 
 import com.example.common.Result;
-import com.example.controller.param.TradeOrderParam;
+import com.example.controller.param.SubmitTradeSubmitOrderParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TestController {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+    private final RedisTemplate redisTemplate;
 
     @GetMapping("/testRedis")
     public String testRedis() {
@@ -20,7 +21,7 @@ public class TestController {
     }
 
     @PostMapping("/testOrder")
-    public Result testOrder(@RequestBody TradeOrderParam param) {
+    public Result testOrder(@RequestBody SubmitTradeSubmitOrderParam param) {
         return Result.genSuccessResult(param);
     }
 }
