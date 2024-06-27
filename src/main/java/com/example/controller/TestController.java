@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.common.Result;
+import com.example.common.order.Result;
 import com.example.controller.param.OrderParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
