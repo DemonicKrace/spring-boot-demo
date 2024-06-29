@@ -25,9 +25,9 @@ public class Result<T> {
             return this;
         }
 
-        public Builder<T> fail(ResultCode code) {
-            this.code = code.getCode();
-            this.message = code.getMessage();
+        public Builder<T> fail(ResultCode resultCode) {
+            this.code = resultCode.getCode();
+            this.message = resultCode.getMessage();
             return this;
         }
 
@@ -57,5 +57,9 @@ public class Result<T> {
 
     public static <T> Result<T> genSuccessResult() {
         return Result.<T>newBuilder().success().build();
+    }
+
+    public static <T> Result<T> genFailResult(ResultCode resultCode) {
+        return Result.<T>newBuilder().fail(resultCode).build();
     }
 }
