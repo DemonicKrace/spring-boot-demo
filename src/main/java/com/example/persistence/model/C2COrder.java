@@ -25,7 +25,7 @@ public class C2COrder implements Serializable {
      * 用戶ID
      */
     @Column(name = "user_id")
-    private Integer userid;
+    private Integer userId;
 
     /**
      * 區塊鏈的協議

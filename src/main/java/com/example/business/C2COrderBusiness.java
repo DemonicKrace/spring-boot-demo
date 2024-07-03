@@ -49,16 +49,16 @@ public class C2COrderBusiness {
         return Result.genSuccessResult();
     }
 
-//    /**
-//     * 建立C2C買單
-//     *
-//     * @param param 提交C2C買單的請求
-//     * @return Result 統一的的回傳結果
-//     */
-//    public Result submitBuyOrder(C2CSubmitBuyOrderParam param) {
-//        // TODO: 業務邏輯實作
-//
-//
-//        return Result.genSuccessResult();
-//    }
+    /**
+     * 建立C2C買單
+     *
+     * @param param 提交C2C買單的請求
+     * @return Result 統一的的回傳結果
+     */
+    public Result submitBuyOrder(C2CSubmitBuyOrderParam param) {
+        // TODO: 業務邏輯實作
+
+
+        return Result.genSuccessResult();
+    }
 }

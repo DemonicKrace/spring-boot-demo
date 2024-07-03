@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.persistence.mapper.UserMapper">
-    <resultMap type="com.example.persistence.model.C2COrder" id="UserResult">
+<mapper namespace="com.example.persistence.mapper.C2COrderMapper">
+    <resultMap type="com.example.persistence.model.C2COrder" id="C2COrderResult">
         <result property="id" column="id"></result>
         <result property="orderId" column="orderId"></result>
         <result property="userid" column="userid"></result>
@@ -13,7 +13,7 @@
         <result property="updateDate" column="updateDate"></result>
         <result property="updateBy" column="updateBy"></result>
     </resultMap>
-    <select id="findAll" resultMap="UserResult">
+    <select id="findAll" resultMap="C2COrderResult">
         select * from c2c_order order by id desc
     </select>
     <insert id="insertOrder" parameterType="com.example.persistence.model.C2COrder">
@@ -39,12 +39,12 @@
         #{updateBy})
     </insert>
     <update id="updateOrder" parameterType="com.example.persistence.model.C2COrder">
-        update user
+        update c2c_order
         <set>
-            <if test="order_id != null">
+            <if test="orderId != null">
                 order_id = #{orderId},
             </if>
-            <if test="user_id != null">
+            <if test="userId != null">
                 user_id = #{userId},
             </if>
             <if test="protocol != null">
@@ -59,13 +59,13 @@
             <if test="status != null">
                 status = #{status},
             </if>
-            <if test="create_date != null">
+            <if test="createDate != null">
                 create_date = #{createDate},
             </if>
-            <if test="update_date != null">
+            <if test="updateDate != null">
                 update_date = #{updateDate},
             </if>
-            <if test="update_by != null">
+            <if test="updateBy != null">
                 update_by = #{updateBy},
             </if>
         </set>

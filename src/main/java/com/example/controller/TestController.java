@@ -74,7 +74,7 @@ public class TestController {
     public Result testOrder() {
         C2COrder c2COrder = new C2COrder();
         c2COrder.setOrderId("B1234");
-        c2COrder.setUserid(1);
+        c2COrder.setUserId(1);
         c2COrder.setProtocol("ERC20");
         c2COrder.setCoin("USDT");
         c2COrder.setAmount(BigDecimal.valueOf(100));
@@ -91,7 +91,7 @@ public class TestController {
         C2COrder update = new C2COrder();
         update.setId(c2COrder2.getId());
         update.setOrderId("A1234");
-        update.setUserid(2);
+        update.setUserId(2);
         update.setProtocol("TRC20");
         update.setCoin("BTC");
         update.setAmount(BigDecimal.valueOf(1));
@@ -99,7 +99,7 @@ public class TestController {
         update.setCreateDate(new Date());
         update.setUpdateDate(new Date());
         update.setUpdateBy("John");
-        int updateResult = c2COrderMapper.insertOrder(c2COrder);
+        int updateResult = c2COrderMapper.updateOrder(update);
         log.info("updateResult = {}", updateResult);
 
         return Result.genSuccessResult();

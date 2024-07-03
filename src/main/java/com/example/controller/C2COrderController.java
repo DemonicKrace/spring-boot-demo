@@ -23,20 +23,20 @@ public class C2COrderController {
      * @param param 提交C2C賣單的請求
      * @return Result 統一的的回傳結果
      */
-    @PostMapping("/submitBuyOrder")
+    @PostMapping("/submitSellOrder")
     public Result submitSellOrder(@RequestBody C2CSubmitSellOrderParam param) {
         return c2COrderBusiness.submitSellOrder(param);
     }
 
 
-//    /**
-//     * 建立C2C買單
-//     *
-//     * @param param 提交C2C買單的請求
-//     * @return Result 統一的的回傳結果
-//     */
-//    @PostMapping("/submitBuyOrder")
-//    public Result submitBuyOrder(@RequestBody C2CSubmitBuyOrderParam param) {
-//        return c2COrderBusiness.submitBuyOrder(param);
-//    }
+    /**
+     * 建立C2C買單
+     *
+     * @param param 提交C2C買單的請求
+     * @return Result 統一的的回傳結果
+     */
+    @PostMapping("/submitBuyOrder")
+    public Result submitBuyOrder(@RequestBody C2CSubmitBuyOrderParam param) {
+        return c2COrderBusiness.submitBuyOrder(param);
+    }
 }
