@@ -2,7 +2,9 @@ package com.example.controller;
 
 import com.example.common.Result;
 import com.example.controller.param.SubmitTradeSubmitOrderParam;
+import com.example.persistence.mapper.C2COrderMapper;
 import com.example.persistence.mapper.UserMapper;
+import com.example.persistence.model.C2COrder;
 import com.example.persistence.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -20,6 +24,7 @@ public class TestController {
 
     private final RedisTemplate redisTemplate;
     private final UserMapper userMapper;
+    private final C2COrderMapper c2COrderMapper;
 
     @GetMapping("/testRedis")
     public String testRedis() {
@@ -32,8 +37,8 @@ public class TestController {
         return Result.genSuccessResult(param);
     }
 
-    @GetMapping("/testMysql")
-    public Result testOrder() {
+    @GetMapping("/testUser")
+    public Result testUser() {
         User insert1 = new User();
         insert1.setUsername("username1");
         insert1.setPassword("password1");
@@ -61,6 +66,41 @@ public class TestController {
 
         int deleteResult = userMapper.deleteUser(2);
         log.info("deleteResult = {}", deleteResult);
+
+        return Result.genSuccessResult();
+    }
+
+    @GetMapping("/testOrder")
+    public Result testOrder() {
+        C2COrder c2COrder = new C2COrder();
+        c2COrder.setOrderId("B1234");
+        c2COrder.setUserid(1);
+        c2COrder.setProtocol("ERC20");
+        c2COrder.setCoin("USDT");
+        c2COrder.setAmount(BigDecimal.valueOf(100));
+        c2COrder.setStatus(0);
+        c2COrder.setCreateDate(new Date());
+        c2COrder.setUpdateDate(new Date());
+        c2COrder.setUpdateBy("Andy");
+        int insertResult = c2COrderMapper.insertOrder(c2COrder);
+        log.info("insertResult = {}", insertResult);
+
+        C2COrder c2COrder2 = c2COrderMapper.findByOrderId("B1234");
+        log.info("c2COrder2 = {}", c2COrder2);
+
+        C2COrder update = new C2COrder();
+        update.setId(c2COrder2.getId());
+        update.setOrderId("A1234");
+        update.setUserid(2);
+        update.setProtocol("TRC20");
+        update.setCoin("BTC");
+        update.setAmount(BigDecimal.valueOf(1));
+        update.setStatus(1);
+        update.setCreateDate(new Date());
+        update.setUpdateDate(new Date());
+        update.setUpdateBy("John");
+        int updateResult = c2COrderMapper.insertOrder(c2COrder);
+        log.info("updateResult = {}", updateResult);
 
         return Result.genSuccessResult();
     }

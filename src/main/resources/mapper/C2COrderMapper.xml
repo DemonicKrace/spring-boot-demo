@@ -13,44 +13,62 @@
         <result property="updateDate" column="updateDate"></result>
         <result property="updateBy" column="updateBy"></result>
     </resultMap>
-<!--    <select id="findAll" resultMap="UserResult">-->
-<!--        select * from c2c_order order by id desc-->
-<!--    </select>-->
-<!--    <insert id="insertOrder" parameterType="com.example.persistence.model.C2COrder">-->
-<!--        INSERT INTO `c2c_order`-->
-<!--        (`id`,-->
-<!--        `order_id`,-->
-<!--        `user_id`,-->
-<!--        `protocol`,-->
-<!--        `coin`,-->
-<!--        `amount`,-->
-<!--        `status`,-->
-<!--        `create_date`,-->
-<!--        `update_date`,-->
-<!--        `update_by`)-->
-<!--        VALUES-->
-<!--        (#{id},-->
-<!--        #{orderId},-->
-<!--        #{userId},-->
-<!--        #{protocol},-->
-<!--        #{coin},-->
-<!--        #{amount},-->
-<!--        #{status},-->
-<!--        #{createDate},-->
-<!--        #{updateDate},-->
-<!--        #{updateBy})-->
-<!--    </insert>-->
-<!--    <update id="updateOrder" parameterType="com.example.persistence.model.C2COrder">-->
-<!--        update user-->
-<!--        <set>-->
-<!--            <if test="username != null and username != ''">-->
-<!--                username = #{username},-->
-<!--            </if>-->
-<!--            <if test="password != null and password != ''">-->
-<!--                password = #{password},-->
-<!--            </if>-->
-<!--        </set>-->
-<!--        where id = #{id}-->
-<!--    </update>-->
-
+    <select id="findAll" resultMap="UserResult">
+        select * from c2c_order order by id desc
+    </select>
+    <insert id="insertOrder" parameterType="com.example.persistence.model.C2COrder">
+        INSERT INTO `c2c_order`
+        (`order_id`,
+        `user_id`,
+        `protocol`,
+        `coin`,
+        `amount`,
+        `status`,
+        `create_date`,
+        `update_date`,
+        `update_by`)
+        VALUES
+        (#{orderId},
+        #{userId},
+        #{protocol},
+        #{coin},
+        #{amount},
+        #{status},
+        #{createDate},
+        #{updateDate},
+        #{updateBy})
+    </insert>
+    <update id="updateOrder" parameterType="com.example.persistence.model.C2COrder">
+        update user
+        <set>
+            <if test="order_id != null">
+                order_id = #{orderId},
+            </if>
+            <if test="user_id != null">
+                user_id = #{userId},
+            </if>
+            <if test="protocol != null">
+                protocol = #{protocol},
+            </if>
+            <if test="coin != null">
+                coin = #{coin},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="create_date != null">
+                create_date = #{createDate},
+            </if>
+            <if test="update_date != null">
+                update_date = #{updateDate},
+            </if>
+            <if test="update_by != null">
+                update_by = #{updateBy},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
