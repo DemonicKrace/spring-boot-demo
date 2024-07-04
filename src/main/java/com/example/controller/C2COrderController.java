@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.business.C2COrderBusiness;
 import com.example.common.Result;
+import com.example.controller.param.c2c.C2CQuerySellOrderParam;
 import com.example.controller.param.c2c.C2CSubmitBuyOrderParam;
 import com.example.controller.param.c2c.C2CSubmitSellOrderParam;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,10 @@ public class C2COrderController {
     @PostMapping("/submitBuyOrder")
     public Result submitBuyOrder(@RequestBody C2CSubmitBuyOrderParam param) {
         return c2COrderBusiness.submitBuyOrder(param);
+    }
+
+    @PostMapping("getSellOrderList")
+    public Result getSellOrderList(@RequestBody C2CQuerySellOrderParam param) {
+        return c2COrderBusiness.getSellOrderList(param);
     }
 }

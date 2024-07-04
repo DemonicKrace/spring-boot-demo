@@ -1,6 +1,7 @@
 package com.example.business;
 
 import com.example.common.Result;
+import com.example.controller.param.c2c.C2CQuerySellOrderParam;
 import com.example.controller.param.c2c.C2CSubmitBuyOrderParam;
 import com.example.controller.param.c2c.C2CSubmitSellOrderParam;
 import com.example.persistence.mapper.C2COrderMapper;
@@ -59,6 +60,17 @@ public class C2COrderBusiness {
         // TODO: 業務邏輯實作
 
 
+        return Result.genSuccessResult();
+    }
+
+    /**
+     * 查詢賣單列表
+     *
+     * @param param 查詢參數
+     * @return 賣單列表
+     */
+    public Result getSellOrderList(C2CQuerySellOrderParam param) {
+        // TODO: 業務邏輯實作
         return Result.genSuccessResult();
     }
 }
