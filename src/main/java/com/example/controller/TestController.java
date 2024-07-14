@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import ch.qos.logback.core.util.TimeUtil;
 import com.example.common.Result;
 import com.example.controller.param.SubmitTradeSubmitOrderParam;
 import com.example.persistence.mapper.C2COrderMapper;
@@ -11,9 +12,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -108,29 +111,34 @@ public class TestController {
         return Result.genSuccessResult();
     }
 
+    /**
+     * 創建一個 測試用的 賣單
+     * @return
+     */
     @GetMapping("/createSellOrder")
     public Result createSellOrder() {
         String orderId = "S20240714180000AAA";
         Integer amount = 100;
-        SellOrder sellOrder = new SellOrder();
-        sellOrder.setOrderId(orderId);
-        sellOrder.setAmount(amount);
-        redisTemplate.opsForValue().set(orderId, sellOrder);
-        return Result.genSuccessResult(sellOrder);
+//        SellOrder sellOrder = new SellOrder();
+//        sellOrder.setOrderId(orderId);
+//        sellOrder.setAmount(amount);
+        redisTemplate.opsForValue().set(orderId, orderId);
+        return Result.genSuccessResult(orderId);
     }
 
     @GetMapping("/createBuyOrder")
     public Result createBuyOrder() {
         String orderId = "S20240714180000AAA";
-        SellOrder sellOrder = (SellOrder) redisTemplate.opsForValue().get(orderId);
-        if (sellOrder == null) {
+        String sellOrder = (String) redisTemplate.opsForValue().get(orderId);
+        if (StringUtils.isEmpty(sellOrder)) {
             return Result.newBuilder().fail(1001, "不存在").build();
         }
 
+        // 原子性的操作
         String matchLock = "LOCK_" + orderId;
-        Boolean lock = redisTemplate.opsForValue().setIfAbsent(matchLock, "1");
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(matchLock, "1", Duration.ofSeconds(1));
         if (Boolean.TRUE.equals(lock)) {
-            Boolean deleteResult = redisTemplate.delete(matchLock);
+            Boolean deleteResult = redisTemplate.delete(orderId);
             log.info("deleteResult = {}", deleteResult);
             return Result.genSuccessResult();
         }
@@ -138,6 +146,9 @@ public class TestController {
     }
 }
 
+/**
+ * 賣單
+ */
 @Data
 class SellOrder {
     private String orderId;
