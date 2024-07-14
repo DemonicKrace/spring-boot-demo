@@ -6,6 +6,7 @@ import com.example.persistence.mapper.C2COrderMapper;
 import com.example.persistence.mapper.UserMapper;
 import com.example.persistence.model.C2COrder;
 import com.example.persistence.model.User;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,4 +107,39 @@ public class TestController {
 
         return Result.genSuccessResult();
     }
+
+    @GetMapping("/createSellOrder")
+    public Result createSellOrder() {
+        String orderId = "S20240714180000AAA";
+        Integer amount = 100;
+        SellOrder sellOrder = new SellOrder();
+        sellOrder.setOrderId(orderId);
+        sellOrder.setAmount(amount);
+        redisTemplate.opsForValue().set(orderId, sellOrder);
+        return Result.genSuccessResult(sellOrder);
+    }
+
+    @GetMapping("/createBuyOrder")
+    public Result createBuyOrder() {
+        String orderId = "S20240714180000AAA";
+        SellOrder sellOrder = (SellOrder) redisTemplate.opsForValue().get(orderId);
+        if (sellOrder == null) {
+            return Result.newBuilder().fail(1001, "不存在").build();
+        }
+
+        String matchLock = "LOCK_" + orderId;
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(matchLock, "1");
+        if (Boolean.TRUE.equals(lock)) {
+            Boolean deleteResult = redisTemplate.delete(matchLock);
+            log.info("deleteResult = {}", deleteResult);
+            return Result.genSuccessResult();
+        }
+        return Result.newBuilder().fail(1001, "已被撮和").build();
+    }
+}
+
+@Data
+class SellOrder {
+    private String orderId;
+    private Integer amount;
 }
