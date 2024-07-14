@@ -28,7 +28,9 @@ public class TestController {
 
     @GetMapping("/testRedis")
     public String testRedis() {
-        redisTemplate.opsForValue().set("user", "test");
+//        redisTemplate.opsForValue().set("user", "test");
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", "1");
+        log.info("lock = {}", lock);
         return "user-test";
     }
 
