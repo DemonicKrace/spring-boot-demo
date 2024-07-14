@@ -134,15 +134,28 @@ public class TestController {
             return Result.newBuilder().fail(1001, "不存在").build();
         }
 
-        // 原子性的操作
-        String matchLock = "LOCK_" + orderId;
-        Boolean lock = redisTemplate.opsForValue().setIfAbsent(matchLock, "1", Duration.ofSeconds(1));
-        if (Boolean.TRUE.equals(lock)) {
-            Boolean deleteResult = redisTemplate.delete(orderId);
-            log.info("deleteResult = {}", deleteResult);
-            return Result.genSuccessResult();
-        }
-        return Result.newBuilder().fail(1001, "已被撮和").build();
+        // 正確的案例: 用鎖的性質, 避免 "前一個請求還沒處理完之前, 後面的請求被接入處理, 導致數據不一致或邏輯錯誤"
+//        // 原子性的操作
+//        String matchLock = "LOCK_" + orderId;
+//        Boolean lock = redisTemplate.opsForValue().setIfAbsent(matchLock, "1", Duration.ofSeconds(1));
+//        if (Boolean.TRUE.equals(lock)) {
+//            Boolean deleteResult = redisTemplate.delete(orderId);
+//            log.info("deleteResult = {}", deleteResult);
+        // TODO: DB層的處理 => 事務
+//            return Result.genSuccessResult();
+//        }
+
+        // I/O level
+        // CPU nano
+        // L1~L3
+        // RAM ms mills
+        // disk seconds SSD HDD
+
+        // 錯誤的案例: 併發的結果會導致 同一筆賣單被撮合
+        Boolean deleteResult = redisTemplate.delete(orderId);
+        return Result.genSuccessResult();
+
+//        return Result.newBuilder().fail(1001, "已被撮合").build();
     }
 }
 
