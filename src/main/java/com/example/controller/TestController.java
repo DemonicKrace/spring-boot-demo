@@ -1,12 +1,12 @@
 package com.example.controller;
 
-import ch.qos.logback.core.util.TimeUtil;
 import com.example.common.Result;
 import com.example.controller.param.SubmitTradeSubmitOrderParam;
 import com.example.persistence.mapper.C2COrderMapper;
 import com.example.persistence.mapper.UserMapper;
 import com.example.persistence.model.C2COrder;
 import com.example.persistence.model.User;
+import com.example.utils.RedisUtils;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +29,21 @@ public class TestController {
     private final RedisTemplate redisTemplate;
     private final UserMapper userMapper;
     private final C2COrderMapper c2COrderMapper;
+    private final RedisUtils redisUtils;
 
     @GetMapping("/testRedis")
     public String testRedis() {
 //        redisTemplate.opsForValue().set("user", "test");
-        Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", "1");
-        log.info("lock = {}", lock);
+//        Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", "1");
+//        log.info("lock = {}", lock);
+
+        SellOrder sellOrder = new SellOrder();
+        sellOrder.setOrderId("asda");
+        sellOrder.setAmount(10);
+        redisUtils.set("test", sellOrder, 100000);
+
+        SellOrder order = redisUtils.get("test", SellOrder.class);
+        log.info("order = {}", order);
         return "user-test";
     }
 
@@ -113,6 +122,7 @@ public class TestController {
 
     /**
      * 創建一個 測試用的 賣單
+     *
      * @return
      */
     @GetMapping("/createSellOrder")
@@ -144,6 +154,7 @@ public class TestController {
         // TODO: DB層的處理 => 事務
 //            return Result.genSuccessResult();
 //        }
+//        return Result.newBuilder().fail(1001, "已被撮合").build();
 
         // I/O level
         // CPU nano
@@ -154,8 +165,6 @@ public class TestController {
         // 錯誤的案例: 併發的結果會導致 同一筆賣單被撮合
         Boolean deleteResult = redisTemplate.delete(orderId);
         return Result.genSuccessResult();
-
-//        return Result.newBuilder().fail(1001, "已被撮合").build();
     }
 }
 
