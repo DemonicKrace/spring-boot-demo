@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -164,6 +165,19 @@ public class TestController {
 
         // 錯誤的案例: 併發的結果會導致 同一筆賣單被撮合
         Boolean deleteResult = redisTemplate.delete(orderId);
+        return Result.genSuccessResult();
+    }
+
+    @GetMapping("/testTransactional")
+    @Transactional
+    public Result testTransactional() {
+        User insert1 = new User();
+        insert1.setUsername("test1");
+        insert1.setPassword("test1");
+        int insert1Result = userMapper.insertUser(insert1);
+        log.info("insert1Result = {}", insert1Result);
+
+//        throw new RuntimeException();
         return Result.genSuccessResult();
     }
 }
